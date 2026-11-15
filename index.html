@@ -43,6 +43,15 @@
       <label class="comment">Комментарий<textarea id="comment" rows="3" placeholder="Сроки, условия оплаты"></textarea></label>
       <p class="signature">Подпись ____________________</p>
       <button type="button" id="save-pdf">Сохранить PDF</button>
+      <div class="draft-actions">
+        <button type="button" id="copy-whatsapp">Скопировать для WhatsApp</button>
+        <button type="button" id="new-estimate">Новая смета</button>
+      </div>
+      <p id="copy-status" role="status" aria-live="polite"></p>
+      <div id="manual-copy" hidden>
+        <label>Скопируйте текст вручную<textarea id="share-text" rows="8" readonly></textarea></label>
+      </div>
+      <p id="storage-status" role="status"></p>
       <p class="print-help">В окне печати выберите «Сохранить как PDF». Для чистого документа отключите колонтитулы браузера.</p>
     </section>
     <p class="privacy">Данные остаются в вашем браузере. Валюта меняет только знак, без пересчёта курса.</p>
