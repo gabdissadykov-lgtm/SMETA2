@@ -1,5 +1,23 @@
 "use strict";
 
+const themeButton = document.querySelector("#theme-toggle");
+function applyTheme(theme) {
+  const dark = theme === "dark";
+  document.documentElement.dataset.theme = dark ? "dark" : "light";
+  themeButton.setAttribute("aria-pressed", String(dark));
+  document.querySelector("#theme-label").textContent = dark ? "Светлый режим" : "Тёмный режим";
+}
+try {
+  applyTheme(localStorage.getItem("megastroy-theme") || "light");
+} catch {
+  applyTheme("light");
+}
+themeButton.addEventListener("click", () => {
+  const theme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+  applyTheme(theme);
+  try { localStorage.setItem("megastroy-theme", theme); } catch { /* Тема работает и без хранилища. */ }
+});
+
 const items = document.querySelector("#items");
 const discountInput = document.querySelector("#discount");
 const vatInput = document.querySelector("#vat");
