@@ -1,0 +1,40 @@
+:root { font-family: system-ui, -apple-system, sans-serif; color: #182c2b; background: #f3f6f5; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+main { max-width: 1040px; margin: 56px auto; padding: 0 24px; }
+header { margin-bottom: 30px; }
+.eyebrow { color: #237366; font-size: 12px; font-weight: 750; letter-spacing: .12em; }
+h1 { font-size: clamp(28px, 5vw, 42px); letter-spacing: -.04em; margin: 10px 0; }
+header > p:last-child, .privacy { color: #536b67; }
+.card { background: white; padding: 28px; border: 1px solid #dbe5e2; border-radius: 18px; }
+h2 { font-size: 20px; margin: 0 0 22px; }
+table { width: 100%; border-collapse: collapse; text-align: left; }
+th { font-size: 13px; color: #536b67; font-weight: 600; padding: 0 8px 12px; }
+td { padding: 8px; border-top: 1px solid #e7eeeb; }
+td:first-child { width: 38%; }
+td:nth-child(2), td:nth-child(3) { width: 16%; }
+input, select, button { font: inherit; min-height: 44px; min-width: 44px; border-radius: 8px; }
+input, select { width: 100%; padding: 10px 12px; border: 1px solid #bdcdc7; background: white; color: inherit; }
+button { cursor: pointer; border: 1px solid #b8d4cb; background: #edf6f2; color: #175f50; padding: 10px 16px; font-weight: 600; }
+button:hover { background: #dceee6; }
+:focus-visible { outline: 3px solid #248477; outline-offset: 3px; }
+.remove { background: white; color: #a13b3b; border-color: #e8cccc; }
+#add-item { margin-top: 16px; }
+.settings { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; border-top: 1px solid #e7eeeb; margin-top: 28px; padding-top: 24px; }
+label { display: grid; gap: 8px; font-size: 14px; font-weight: 600; }
+.totals { max-width: 440px; margin: 28px 0 0 auto; }
+.totals > div { display: flex; justify-content: space-between; gap: 20px; padding: 10px 0; }
+.totals > [hidden] { display: none; }
+dd { margin: 0; font-weight: 650; text-align: right; white-space: nowrap; }
+.line-total { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.grand-total { border-top: 2px solid #d7e7df; margin-top: 8px; font-size: 20px; color: #175f50; }
+.privacy { font-size: 13px; line-height: 1.6; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+@media (max-width: 700px) {
+  main { margin: 28px auto; padding: 0 16px; }
+  .card { padding: 18px; }
+  .table-wrap { overflow-x: auto; }
+  table { min-width: 660px; }
+  .settings { grid-template-columns: 1fr; gap: 16px; }
+  .grand-total { font-size: 18px; }
+}

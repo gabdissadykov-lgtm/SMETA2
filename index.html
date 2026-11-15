@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Смета за 5 минут</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <main>
+    <header><p class="eyebrow">ПРОСТО И ПО ДЕЛУ</p><h1>Смета за 5 минут</h1><p>Добавьте позиции — мы посчитаем итог.</p></header>
+    <section class="card" aria-labelledby="items-title">
+      <h2 id="items-title">Позиции сметы</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th scope="col">Наименование</th><th scope="col">Количество</th><th scope="col">Цена</th><th scope="col">Сумма</th><th scope="col"><span class="sr-only">Действия</span></th></tr></thead>
+          <tbody id="items"></tbody>
+        </table>
+      </div>
+      <button type="button" id="add-item">+ Добавить позицию</button>
+      <div class="settings">
+        <label>Скидка, %<input id="discount" type="text" inputmode="decimal" value="0"></label>
+        <label>НДС, %<input id="vat" type="text" inputmode="decimal" value="0"></label>
+        <label>Валюта<select id="currency"><option>₸</option><option>₽</option><option>$</option><option>€</option></select></label>
+      </div>
+      <dl class="totals" aria-live="polite" aria-atomic="true">
+        <div><dt>Сумма</dt><dd id="subtotal">0 ₸</dd></div>
+        <div id="discount-row" hidden><dt>Скидка</dt><dd id="discount-amount"></dd></div>
+        <div id="discounted-row" hidden><dt>Сумма со скидкой</dt><dd id="discounted"></dd></div>
+        <div id="vat-row" hidden><dt>НДС</dt><dd id="vat-amount"></dd></div>
+        <div class="grand-total"><dt>Итого к оплате</dt><dd id="total">0 ₸</dd></div>
+      </dl>
+    </section>
+    <p class="privacy">Данные остаются в вашем браузере. Валюта меняет только знак, без пересчёта курса.</p>
+  </main>
+  <template id="item-template">
+    <tr>
+      <td><input class="name" type="text" aria-label="Наименование позиции" placeholder="Товар или услуга"></td>
+      <td><input class="quantity" type="text" inputmode="decimal" aria-label="Количество" value="1"></td>
+      <td><input class="price" type="text" inputmode="decimal" aria-label="Цена" placeholder="0"></td>
+      <td class="line-total">0 ₸</td>
+      <td><button class="remove" type="button" aria-label="Удалить позицию">Удалить</button></td>
+    </tr>
+  </template>
+</body>
+</html>
