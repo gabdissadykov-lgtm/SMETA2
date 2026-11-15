@@ -194,10 +194,10 @@ function restoreDraft() {
   }
 }
 
-document.querySelector(".card").addEventListener("input", (event) => {
+document.querySelector("#estimate-card").addEventListener("input", (event) => {
   if (event.target.id !== "share-text") saveDraft();
 });
-document.querySelector(".card").addEventListener("change", (event) => {
+document.querySelector("#estimate-card").addEventListener("change", (event) => {
   if (event.target.id !== "share-text") saveDraft();
 });
 
@@ -274,3 +274,111 @@ document.querySelector("#copy-whatsapp").addEventListener("click", async () => {
 });
 
 restoreDraft();
+
+// Расчёт расхода отделён от денежных расчётов сметы.
+function calculateMaterial(p) {
+  const fail = (error) => ({ error });
+  if (!(p.length > 0 && p.width > 0)) return fail("Введите длину и ширину комнаты больше нуля.");
+  const walls = p.type === "wallpaper" || (p.type === "tile" && p.surface === "walls");
+  if (walls && !(p.height > 0)) return fail("Введите высоту стен больше нуля.");
+  const area = walls ? 2 * (p.length + p.width) * p.height : p.length * p.width;
+  const required = area * (1 + p.reserve / 100);
+  let count, purchaseArea, unit;
+  // Убираем только погрешность двоичного представления на целой границе.
+  const ceil = (n) => Math.ceil(Number(n.toPrecision(14)));
+  if (p.type === "tile") {
+    if (!(p.tileLength > 0 && p.tileWidth > 0)) return fail("Введите обе стороны плитки больше нуля.");
+    const pieceArea = p.tileLength * p.tileWidth / 10000;
+    count = ceil(required / pieceArea);
+    purchaseArea = count * pieceArea;
+    unit = "плиток";
+  } else if (p.type === "laminate") {
+    if (!(p.packArea > 0)) return fail("Введите площадь упаковки больше нуля.");
+    count = ceil(required / p.packArea);
+    purchaseArea = count * p.packArea;
+    unit = "упаковок";
+  } else if (p.type === "wallpaper") {
+    if (!(p.rollWidth > 0 && p.rollLength > 0)) return fail("Введите ширину и длину рулона больше нуля.");
+    const stripLength = p.height + p.trim / 100;
+    const stripsPerRoll = Math.floor(Number((p.rollLength / stripLength).toPrecision(14)));
+    if (stripsPerRoll < 1) return fail("Длины рулона не хватает на одну полосу с припуском.");
+    const strips = ceil(ceil(2 * (p.length + p.width) / p.rollWidth) * (1 + p.reserve / 100));
+    count = ceil(strips / stripsPerRoll);
+    purchaseArea = count * p.rollLength * p.rollWidth;
+    unit = "рулонов";
+  } else return fail("Выберите материал.");
+  if (![area, required, purchaseArea, count].every((n) => Number.isFinite(n) && n > 0 && n <= Number.MAX_SAFE_INTEGER)) {
+    return fail("Размеры слишком велики для расчёта. Проверьте введённые числа.");
+  }
+  return { area, required, count, purchaseArea, unit };
+}
+
+const calculator = document.querySelector("#material-calculator");
+const calcFields = {
+  length: "length", width: "width", height: "height", reserve: "reserve",
+  tileLength: "tile-length", tileWidth: "tile-width", rollWidth: "roll-width",
+  rollLength: "roll-length", trim: "trim", packArea: "pack-area"
+};
+function calculatorParameters() {
+  return {
+    type: document.querySelector("#calc-type").value,
+    surface: document.querySelector("#calc-surface").value,
+    ...Object.fromEntries(Object.entries(calcFields).map(([key, id]) => [key, numberValue(document.getElementById("calc-" + id).value)]))
+  };
+}
+function areaText(value) {
+  return value.toLocaleString("ru-RU", { maximumFractionDigits: 4 }).replace(/\u00a0|\u202f/g, " ");
+}
+function updateCalculator() {
+  const p = calculatorParameters();
+  document.querySelector("#calc-surface-field").hidden = p.type !== "tile";
+  document.querySelector("#calc-height-field").hidden = !(p.type === "wallpaper" || (p.type === "tile" && p.surface === "walls"));
+  for (const type of ["tile", "wallpaper", "laminate"]) {
+    document.getElementById(`calc-${type}-fields`).hidden = p.type !== type;
+  }
+  const result = calculateMaterial(p);
+  document.querySelector("#calc-add").disabled = Boolean(result.error);
+  document.querySelector("#calc-result").textContent = result.error ||
+    `Площадь: ${areaText(result.area)} м²\nС запасом ${areaText(p.reserve)} %: ${areaText(result.required)} м²\nКупить: ${result.count} ${result.unit} (${areaText(result.purchaseArea)} м²).`;
+  return { p, result };
+}
+document.querySelector("#open-calculator").addEventListener("click", () => {
+  calculator.hidden = !calculator.hidden;
+  document.querySelector("#open-calculator").setAttribute("aria-expanded", String(!calculator.hidden));
+  if (!calculator.hidden) {
+    updateCalculator();
+    document.querySelector("#calc-type").focus();
+  }
+});
+function closeCalculator() {
+  calculator.hidden = true;
+  document.querySelector("#open-calculator").setAttribute("aria-expanded", "false");
+  document.querySelector("#open-calculator").focus();
+}
+document.querySelector("#close-calculator").addEventListener("click", closeCalculator);
+calculator.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeCalculator();
+});
+calculator.addEventListener("input", updateCalculator);
+calculator.addEventListener("change", updateCalculator);
+document.querySelector("#calc-add").addEventListener("click", () => {
+  const { p, result } = updateCalculator();
+  if (result.error) return;
+  const name = p.type === "wallpaper" ? "Обои флизелиновые, 1,06 × 10 м"
+    : p.type === "laminate" ? "Ламинат 32 класса"
+    : p.surface === "walls" ? "Плитка керамическая настенная" : "Керамогранит напольный";
+  const material = materials.find((item) => item.name === name);
+  addItem(false);
+  const row = items.lastElementChild;
+  const quantity = p.type === "wallpaper" ? result.count : Math.ceil(Number((result.purchaseArea * 1000000).toPrecision(14))) / 1000000;
+  const wallpaperMatches = p.rollWidth === 1.06 && p.rollLength === 10;
+  row.querySelector(".name").value = p.type === "wallpaper" && !wallpaperMatches
+    ? `Обои, рулон ${areaText(p.rollWidth)} × ${areaText(p.rollLength)} м` : material.name;
+  row.querySelector(".quantity").value = String(quantity);
+  row.querySelector(".unit").value = material.unit;
+  row.querySelector(".price").value = p.type === "wallpaper" && !wallpaperMatches ? "0" : String(material.price);
+  update();
+  saveDraft();
+  closeCalculator();
+  row.querySelector(".quantity").focus();
+});

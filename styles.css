@@ -37,6 +37,22 @@ textarea { font: inherit; color: inherit; width: 100%; min-height: 88px; padding
 .print-title, .print-value, .signature, .print-brand { display: none; }
 .unit { margin-top: 6px; }
 .draft-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; }
+#open-calculator { display: block; margin-bottom: 24px; padding: 16px 22px; background: #17654f; color: #fff; border: 2px solid #17654f; box-shadow: 0 5px 16px #175f5025; }
+#open-calculator:hover { background: #104b3a; }
+.calculator { margin-bottom: 24px; }
+.calculator-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-bottom: 18px; }
+.calculator [hidden] { display: none !important; }
+.calculator-note { font-size: 13px; line-height: 1.6; color: #536b67; }
+#calc-result { padding: 16px; border: 1px solid #b8d4cb; border-radius: 8px; background: #edf6f2; line-height: 1.7; white-space: pre-line; }
+button:disabled { opacity: .5; cursor: not-allowed; }
+#close-calculator { margin-top: 8px; }
+@media (max-width: 700px) { .calculator-grid { grid-template-columns: 1fr; } #open-calculator { width: 100%; } }
+@media screen {
+  [data-theme="dark"] #open-calculator { background: #b9d8bd; border-color: #b9d8bd; color: #152e20; }
+  [data-theme="dark"] #open-calculator:hover { background: #d1e7d3; }
+  [data-theme="dark"] #calc-result { background: #202924; border-color: #65756a; }
+  [data-theme="dark"] .calculator-note { color: #bac9bf; }
+}
 #copy-status, #storage-status { font-size: 14px; }
 #copy-status:empty, #storage-status:empty { display: none; }
 @media (max-width: 700px) {
@@ -95,7 +111,7 @@ textarea { font: inherit; color: inherit; width: 100%; min-height: 88px; padding
   .theme-indicator::after { transition: transform .2s; }
 }
 @media print {
-  .apartment-wall, .theme-toolbar { display: none !important; }
+  .apartment-wall, .theme-toolbar, #material-calculator { display: none !important; }
   :root { color-scheme: light; }
   :root, body { background: white; color: black; font-size: 11pt; }
   main { max-width: none; margin: 0; padding: 0; }

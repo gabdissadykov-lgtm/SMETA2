@@ -13,7 +13,36 @@
   <main>
     <div class="theme-toolbar"><button type="button" id="theme-toggle" aria-pressed="false"><span class="theme-indicator" aria-hidden="true"></span><span id="theme-label">Тёмный режим</span></button></div>
     <header><p class="eyebrow">МАГАЗИН СТРОИТЕЛЬНЫХ ТОВАРОВ</p><h1>Сметчик магазина МЕГАСТРОЙ</h1><p>Выберите материалы — цена и единица измерения подставятся автоматически. Цены в каталоге учебные.</p></header>
-    <section class="card" aria-labelledby="items-title">
+    <button type="button" id="open-calculator" aria-expanded="false" aria-controls="material-calculator">▦ Рассчитать количество материалов</button>
+    <section id="material-calculator" class="card calculator" aria-labelledby="calculator-title" hidden>
+      <h2 id="calculator-title">Сколько материалов нужно?</h2>
+      <div class="calculator-grid">
+        <label>Материал<select id="calc-type"><option value="tile">Плитка / кафель</option><option value="wallpaper">Обои</option><option value="laminate">Ламинат</option></select></label>
+        <label id="calc-surface-field">Поверхность для плитки<select id="calc-surface"><option value="floor">Пол</option><option value="walls">Все стены</option></select></label>
+        <label>Длина комнаты, м<input id="calc-length" type="text" inputmode="decimal" placeholder="Например, 4"></label>
+        <label>Ширина комнаты, м<input id="calc-width" type="text" inputmode="decimal" placeholder="Например, 3"></label>
+        <label id="calc-height-field" hidden>Высота стен, м<input id="calc-height" type="text" inputmode="decimal" placeholder="Например, 2,7"></label>
+        <label>Запас, %<input id="calc-reserve" type="text" inputmode="decimal" value="10"></label>
+      </div>
+      <div class="calculator-grid" id="calc-tile-fields">
+        <label>Длина плитки, см<input id="calc-tile-length" type="text" inputmode="decimal" value="60"></label>
+        <label>Ширина плитки, см<input id="calc-tile-width" type="text" inputmode="decimal" value="60"></label>
+      </div>
+      <div class="calculator-grid" id="calc-wallpaper-fields" hidden>
+        <label>Ширина рулона, м<input id="calc-roll-width" type="text" inputmode="decimal" value="1,06"></label>
+        <label>Длина рулона, м<input id="calc-roll-length" type="text" inputmode="decimal" value="10"></label>
+        <label>Припуск на полосу, см<input id="calc-trim" type="text" inputmode="decimal" value="10"></label>
+      </div>
+      <div class="calculator-grid" id="calc-laminate-fields" hidden>
+        <label>Площадь одной упаковки, м²<input id="calc-pack-area" type="text" inputmode="decimal" value="2"></label>
+      </div>
+      <p class="calculator-note">Для прямоугольной комнаты. Стены считаются без вычета окон и дверей. Обои — без подбора рисунка; сложную раскладку и раппорт уточните отдельно. Размеры материала берите с упаковки.</p>
+      <p id="calc-result" role="status" aria-live="polite">Введите размеры комнаты.</p>
+      <p class="calculator-note">В смету добавится новая позиция: плитка и ламинат — в м² по площади покупки, обои — в рулонах. Используются учебные цены каталога; для обоев с другим размером рулона цену нужно указать вручную.</p>
+      <button type="button" id="calc-add" disabled>Добавить расчёт в смету</button>
+      <button type="button" id="close-calculator">Закрыть калькулятор</button>
+    </section>
+    <section id="estimate-card" class="card" aria-labelledby="items-title">
       <div class="document-fields">
         <label>Номер сметы<input id="estimate-number" type="text" value="1"></label>
         <label>Дата сметы<input id="estimate-date" type="date"></label>
