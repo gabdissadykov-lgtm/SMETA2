@@ -43,6 +43,10 @@ textarea { font: inherit; color: inherit; width: 100%; min-height: 88px; padding
 .calculator-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-bottom: 18px; }
 .calculator [hidden] { display: none !important; }
 .calculator-note { font-size: 13px; line-height: 1.6; color: #536b67; }
+.calculator details { margin: 20px 0; }
+.calculator summary { cursor: pointer; min-height: 44px; padding: 12px 0; font-weight: 650; }
+.opening-row { border: 1px solid #9eafa5; border-radius: 8px; padding: 16px; min-width: 0; }
+#calc-fill-seams { margin-bottom: 12px; }
 #calc-result { padding: 16px; border: 1px solid #b8d4cb; border-radius: 8px; background: #edf6f2; line-height: 1.7; white-space: pre-line; }
 button:disabled { opacity: .5; cursor: not-allowed; }
 #close-calculator { margin-top: 8px; }
