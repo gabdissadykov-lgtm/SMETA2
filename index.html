@@ -11,6 +11,15 @@
   <main>
     <header><p class="eyebrow">ПРОСТО И ПО ДЕЛУ</p><h1>Смета за 5 минут</h1><p>Добавьте позиции — мы посчитаем итог.</p></header>
     <section class="card" aria-labelledby="items-title">
+      <div class="document-fields">
+        <label>Номер сметы<input id="estimate-number" type="text" value="1"></label>
+        <label>Дата сметы<input id="estimate-date" type="date"></label>
+      </div>
+      <h2 class="print-title">Смета № <span id="print-number"></span> от <span id="print-date"></span></h2>
+      <div class="requisites">
+        <label>Исполнитель — реквизиты<textarea id="supplier" rows="3" placeholder="Название, ИИН/БИН, адрес, контакты"></textarea></label>
+        <label>Заказчик — реквизиты<textarea id="client" rows="3" placeholder="Название или ФИО, ИИН/БИН, контакты"></textarea></label>
+      </div>
       <h2 id="items-title">Позиции сметы</h2>
       <div class="table-wrap">
         <table>
@@ -31,6 +40,10 @@
         <div id="vat-row" hidden><dt>НДС</dt><dd id="vat-amount"></dd></div>
         <div class="grand-total"><dt>Итого к оплате</dt><dd id="total">0 ₸</dd></div>
       </dl>
+      <label class="comment">Комментарий<textarea id="comment" rows="3" placeholder="Сроки, условия оплаты"></textarea></label>
+      <p class="signature">Подпись ____________________</p>
+      <button type="button" id="save-pdf">Сохранить PDF</button>
+      <p class="print-help">В окне печати выберите «Сохранить как PDF». Для чистого документа отключите колонтитулы браузера.</p>
     </section>
     <p class="privacy">Данные остаются в вашем браузере. Валюта меняет только знак, без пересчёта курса.</p>
   </main>

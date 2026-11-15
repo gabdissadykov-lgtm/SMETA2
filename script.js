@@ -64,3 +64,30 @@ discountInput.addEventListener("input", update);
 vatInput.addEventListener("input", update);
 currencyInput.addEventListener("change", update);
 addItem(false);
+
+// Текстовые копии позволяют печатать длинные значения целиком, без обрезки полями.
+const estimateDate = document.querySelector("#estimate-date");
+const today = new Date();
+estimateDate.value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+
+function preparePrint() {
+  update();
+  document.querySelector("#print-number").textContent = document.querySelector("#estimate-number").value.trim() || "—";
+  const dateParts = estimateDate.value.split("-");
+  document.querySelector("#print-date").textContent = dateParts.length === 3 ? dateParts.reverse().join(".") : "—";
+  document.querySelectorAll(".print-value").forEach((copy) => copy.remove());
+  document.querySelectorAll(".requisites textarea, .comment textarea, #items input").forEach((field) => {
+    const copy = document.createElement("span");
+    copy.className = "print-value";
+    copy.textContent = field.matches(".price") ? money(numberValue(field.value))
+      : field.matches(".quantity") ? String(numberValue(field.value)) : field.value;
+    field.classList.add("print-ready");
+    field.after(copy);
+  });
+}
+
+window.addEventListener("beforeprint", preparePrint);
+document.querySelector("#save-pdf").addEventListener("click", () => {
+  preparePrint();
+  window.print();
+});
