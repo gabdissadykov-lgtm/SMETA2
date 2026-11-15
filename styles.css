@@ -34,7 +34,8 @@ dd { margin: 0; font-weight: 650; text-align: right; white-space: nowrap; }
 textarea { font: inherit; color: inherit; width: 100%; min-height: 88px; padding: 10px 12px; border: 1px solid #bdcdc7; border-radius: 8px; resize: vertical; }
 .comment { margin: 24px 0; }
 .print-help { font-size: 13px; color: #536b67; line-height: 1.6; }
-.print-title, .print-value, .signature { display: none; }
+.print-title, .print-value, .signature, .print-brand { display: none; }
+.unit { margin-top: 6px; }
 .draft-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; }
 #copy-status, #storage-status { font-size: 14px; }
 #copy-status:empty, #storage-status:empty { display: none; }
@@ -54,6 +55,7 @@ textarea { font: inherit; color: inherit; width: 100%; min-height: 88px; padding
   header, button, .settings, .document-fields, .privacy, .print-help, #items-title, .draft-actions, #copy-status, #manual-copy, #storage-status { display: none !important; }
   .card { padding: 0; border: 0; border-radius: 0; }
   .print-title { display: block; font-size: 18pt; margin: 0 0 8mm; }
+  .print-brand { display: block; margin-bottom: 6mm; font-weight: 600; }
   .requisites { grid-template-columns: 1fr 1fr; gap: 8mm; margin-bottom: 8mm; }
   label { font-size: 11pt; gap: 2mm; }
   input, textarea, select { border: 0; border-radius: 0; background: transparent; padding: 0; min-height: 0; }

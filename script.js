@@ -5,6 +5,45 @@ const discountInput = document.querySelector("#discount");
 const vatInput = document.querySelector("#vat");
 const currencyInput = document.querySelector("#currency");
 
+// Учебные цены за указанную единицу, не официальный прайс магазина.
+const materials = [
+  { name: "Цемент М400, 50 кг", price: 2800, unit: "мешок" },
+  { name: "Штукатурка гипсовая, 30 кг", price: 4200, unit: "мешок" },
+  { name: "Шпаклёвка финишная, 20 кг", price: 5500, unit: "мешок" },
+  { name: "Грунтовка глубокого проникновения, 10 л", price: 4800, unit: "канистра" },
+  { name: "Краска интерьерная, 10 л", price: 15000, unit: "ведро" },
+  { name: "Клей плиточный, 25 кг", price: 3600, unit: "мешок" },
+  { name: "Затирка для швов, 2 кг", price: 2400, unit: "упак." },
+  { name: "Плитка керамическая настенная", price: 6500, unit: "м²" },
+  { name: "Керамогранит напольный", price: 8000, unit: "м²" },
+  { name: "Ламинат 32 класса", price: 5900, unit: "м²" },
+  { name: "Подложка под ламинат, 3 мм", price: 650, unit: "м²" },
+  { name: "Плинтус ПВХ, 2,5 м", price: 1200, unit: "шт" },
+  { name: "Обои флизелиновые, 1,06 × 10 м", price: 9500, unit: "рулон" },
+  { name: "Клей для обоев, 300 г", price: 1800, unit: "упак." },
+  { name: "Гипсокартон, 2500 × 1200 × 12,5 мм", price: 3900, unit: "лист" },
+  { name: "Профиль для гипсокартона, 60 × 27 мм, 3 м", price: 1600, unit: "шт" },
+  { name: "Саморезы по металлу, 25 мм, 200 шт", price: 1400, unit: "упак." },
+  { name: "Пена монтажная, 750 мл", price: 2600, unit: "баллон" },
+  { name: "Герметик силиконовый, 280 мл", price: 2200, unit: "туба" },
+  { name: "Кабель ВВГнг 3 × 2,5 мм²", price: 850, unit: "м" }
+];
+for (const material of materials) {
+  const option = document.createElement("option");
+  option.value = material.name;
+  option.label = `${material.price.toLocaleString("ru-RU")} ₸ / ${material.unit} (учебная цена)`;
+  document.querySelector("#materials").append(option);
+}
+
+function selectMaterial(event) {
+  if (!event.target.matches(".name")) return;
+  const material = materials.find((item) => item.name === event.target.value);
+  if (!material) return;
+  const row = event.target.closest("tr");
+  row.querySelector(".price").value = String(material.price);
+  row.querySelector(".unit").value = material.unit;
+}
+
 function numberValue(value) {
   const normalized = String(value).trim().replace(/\s/g, "").replace(",", ".");
   const number = Number(normalized);
@@ -50,7 +89,8 @@ function addItem(focus = true) {
 }
 
 document.querySelector("#add-item").addEventListener("click", () => { addItem(); saveDraft(); });
-items.addEventListener("input", update);
+items.addEventListener("input", (event) => { selectMaterial(event); update(); });
+items.addEventListener("change", (event) => { selectMaterial(event); update(); });
 items.addEventListener("click", (event) => {
   const button = event.target.closest(".remove");
   if (!button) return;
@@ -99,7 +139,7 @@ const fieldIds = ["estimate-number", "estimate-date", "supplier", "client", "com
 function saveDraft() {
   const fields = Object.fromEntries(fieldIds.map((id) => [id, document.getElementById(id).value]));
   const positions = Array.from(items.rows, (row) => Object.fromEntries(
-    ["name", "quantity", "price"].map((name) => [name, row.querySelector("." + name).value])
+    ["name", "quantity", "price", "unit"].map((name) => [name, row.querySelector("." + name).value])
   ));
   try {
     localStorage.setItem(draftKey, JSON.stringify({ fields, positions }));
@@ -117,7 +157,8 @@ function restoreDraft() {
     if (!draft || !draft.fields || !Array.isArray(draft.positions)
       || !fieldIds.every((id) => typeof draft.fields[id] === "string")
       || !["₸", "₽", "$", "€"].includes(draft.fields.currency)
-      || !draft.positions.every((row) => row && ["name", "quantity", "price"].every((key) => typeof row[key] === "string"))) {
+      || !draft.positions.every((row) => row && ["name", "quantity", "price"].every((key) => typeof row[key] === "string")
+        && (row.unit === undefined || typeof row.unit === "string"))) {
       throw new Error("Invalid draft");
     }
     fieldIds.forEach((id) => { document.getElementById(id).value = draft.fields[id]; });
@@ -127,6 +168,7 @@ function restoreDraft() {
       ["name", "quantity", "price"].forEach((name) => {
         items.lastElementChild.querySelector("." + name).value = position[name];
       });
+      items.lastElementChild.querySelector(".unit").value = position.unit ?? "шт";
     });
     update();
   } catch {
@@ -170,7 +212,7 @@ function shareText() {
   update();
   const number = document.querySelector("#estimate-number").value.trim() || "—";
   const date = estimateDate.value ? estimateDate.value.split("-").reverse().join(".") : "—";
-  const lines = [`Смета № ${number} от ${date}`];
+  const lines = ["МЕГАСТРОЙ — магазин строительных товаров", `Смета № ${number} от ${date}`];
   for (const [id, label] of [["supplier", "Исполнитель"], ["client", "Заказчик"]]) {
     const value = document.getElementById(id).value.trim();
     if (value) lines.push(`${label}: ${value}`);
@@ -180,7 +222,8 @@ function shareText() {
     const name = row.querySelector(".name").value.trim() || "Без наименования";
     const quantity = numberValue(row.querySelector(".quantity").value);
     const price = numberValue(row.querySelector(".price").value);
-    lines.push(`• ${name} — ${quantity} шт × ${money(price)} = ${row.querySelector(".line-total").textContent}`);
+    const unit = row.querySelector(".unit").value.trim() || "шт";
+    lines.push(`• ${name} — ${quantity} ${unit} × ${money(price)} = ${row.querySelector(".line-total").textContent}`);
   }
   lines.push("", `Сумма: ${document.querySelector("#subtotal").textContent}`);
   for (const [rowId, label, valueId] of [

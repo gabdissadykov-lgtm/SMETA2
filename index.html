@@ -3,19 +3,20 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Смета за 5 минут</title>
+  <title>Сметчик магазина МЕГАСТРОЙ</title>
   <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
 </head>
 <body>
   <main>
-    <header><p class="eyebrow">ПРОСТО И ПО ДЕЛУ</p><h1>Смета за 5 минут</h1><p>Добавьте позиции — мы посчитаем итог.</p></header>
+    <header><p class="eyebrow">МАГАЗИН СТРОИТЕЛЬНЫХ ТОВАРОВ</p><h1>Сметчик магазина МЕГАСТРОЙ</h1><p>Выберите материалы — цена и единица измерения подставятся автоматически. Цены в каталоге учебные.</p></header>
     <section class="card" aria-labelledby="items-title">
       <div class="document-fields">
         <label>Номер сметы<input id="estimate-number" type="text" value="1"></label>
         <label>Дата сметы<input id="estimate-date" type="date"></label>
       </div>
       <h2 class="print-title">Смета № <span id="print-number"></span> от <span id="print-date"></span></h2>
+      <p class="print-brand">МЕГАСТРОЙ — магазин строительных товаров</p>
       <div class="requisites">
         <label>Исполнитель — реквизиты<textarea id="supplier" rows="3" placeholder="Название, ИИН/БИН, адрес, контакты"></textarea></label>
         <label>Заказчик — реквизиты<textarea id="client" rows="3" placeholder="Название или ФИО, ИИН/БИН, контакты"></textarea></label>
@@ -23,7 +24,7 @@
       <h2 id="items-title">Позиции сметы</h2>
       <div class="table-wrap">
         <table>
-          <thead><tr><th scope="col">Наименование</th><th scope="col">Количество</th><th scope="col">Цена</th><th scope="col">Сумма</th><th scope="col"><span class="sr-only">Действия</span></th></tr></thead>
+          <thead><tr><th scope="col">Наименование</th><th scope="col">Количество / ед.</th><th scope="col">Цена за ед.</th><th scope="col">Сумма</th><th scope="col"><span class="sr-only">Действия</span></th></tr></thead>
           <tbody id="items"></tbody>
         </table>
       </div>
@@ -58,12 +59,13 @@
   </main>
   <template id="item-template">
     <tr>
-      <td><input class="name" type="text" aria-label="Наименование позиции" placeholder="Товар или услуга"></td>
-      <td><input class="quantity" type="text" inputmode="decimal" aria-label="Количество" value="1"></td>
+      <td><input class="name" type="text" list="materials" autocomplete="off" aria-label="Наименование позиции" placeholder="Выберите или введите товар"></td>
+      <td><input class="quantity" type="text" inputmode="decimal" aria-label="Количество" value="1"><input class="unit" type="text" aria-label="Единица измерения" value="шт"></td>
       <td><input class="price" type="text" inputmode="decimal" aria-label="Цена" placeholder="0"></td>
       <td class="line-total">0 ₸</td>
       <td><button class="remove" type="button" aria-label="Удалить позицию">Удалить</button></td>
     </tr>
   </template>
+  <datalist id="materials"></datalist>
 </body>
 </html>
