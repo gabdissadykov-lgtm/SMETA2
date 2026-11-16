@@ -108,8 +108,15 @@ function addItem(focus = true) {
 
 document.querySelector("#add-item").addEventListener("click", () => { addItem(); saveDraft(); });
 document.querySelector("#clear-names").addEventListener("click", () => {
-  if (!window.confirm("Очистить наименования всех материалов? Количества, цены, единицы измерения, реквизиты и остальные данные останутся без изменений.")) return;
-  for (const row of items.rows) row.querySelector(".name").value = "";
+  if (!window.confirm("Очистить форму? Названия и цены материалов, скидка и НДС будут сброшены, итог станет 0. Реквизиты, номер, дата, комментарий, валюта, количества и единицы измерения сохранятся.")) return;
+  for (const row of items.rows) {
+    row.querySelector(".name").value = "";
+    row.querySelector(".price").value = "0";
+  }
+  discountInput.value = "0";
+  vatInput.value = "0";
+  update();
+  clearShare();
   saveDraft();
 });
 items.addEventListener("input", (event) => { selectMaterial(event); update(); });
