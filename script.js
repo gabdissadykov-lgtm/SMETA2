@@ -107,6 +107,11 @@ function addItem(focus = true) {
 }
 
 document.querySelector("#add-item").addEventListener("click", () => { addItem(); saveDraft(); });
+document.querySelector("#clear-names").addEventListener("click", () => {
+  if (!window.confirm("Очистить наименования всех материалов? Количества, цены, единицы измерения, реквизиты и остальные данные останутся без изменений.")) return;
+  for (const row of items.rows) row.querySelector(".name").value = "";
+  saveDraft();
+});
 items.addEventListener("input", (event) => { selectMaterial(event); update(); });
 items.addEventListener("change", (event) => { selectMaterial(event); update(); });
 items.addEventListener("click", (event) => {

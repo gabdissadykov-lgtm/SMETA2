@@ -70,7 +70,10 @@ td input { font-size: 14px; padding: 11px 10px; }
 .line-total, dd { font-variant-numeric: tabular-nums; white-space: nowrap; }
 .remove { background: transparent; border-color: transparent; color: var(--danger); font-size: 12px; padding: 12px; }
 .remove:hover { background: var(--inset); }
-#add-item { margin-top: 20px; background: transparent; border: 1px solid var(--line); }
+.item-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+#add-item { background: transparent; border: 1px solid var(--line); }
+#clear-names { background: #b4232b; color: #fff; }
+#clear-names:hover { background: #951c23; }
 .settings { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; background: var(--inset); border-radius: 18px; margin-top: 32px; padding: 22px; }
 .totals { max-width: 430px; margin: 32px 0 0 auto; }
 .totals > div { display: flex; justify-content: space-between; gap: 20px; padding: 10px 0; font-size: 14px; color: var(--secondary); }
