@@ -12,9 +12,9 @@
   <div class="apartment-wall wall-left" aria-hidden="true"><div class="wall-panel"></div><div class="sconce"><span class="sconce-glow"></span><span class="sconce-body"></span></div></div>
   <div class="apartment-wall wall-right" aria-hidden="true"><div class="wall-panel"></div><div class="sconce"><span class="sconce-glow"></span><span class="sconce-body"></span></div></div>
   <main>
-    <div class="theme-toolbar"><button type="button" id="theme-toggle" aria-pressed="false"><span class="theme-indicator" aria-hidden="true"></span><span id="theme-label">Тёмный режим</span></button></div>
-    <header><p class="eyebrow">МАГАЗИН СТРОИТЕЛЬНЫХ ТОВАРОВ</p><h1>Сметчик магазина МЕГАСТРОЙ</h1><p>Выберите материалы — цена и единица измерения подставятся автоматически. Цены в каталоге учебные.</p></header>
-    <button type="button" id="open-calculator" aria-expanded="false" aria-controls="material-calculator">▦ Рассчитать количество материалов</button>
+    <div class="theme-toolbar"><a class="wordmark" href="#estimate-card" aria-label="МЕГАСТРОЙ — перейти к смете"><span class="brand-mark" aria-hidden="true">М</span>МЕГАСТРОЙ<span class="brand-caption">Сметчик</span></a><button type="button" id="theme-toggle" aria-pressed="false"><span class="theme-indicator" aria-hidden="true"></span><span id="theme-label">Тёмный режим</span></button></div>
+    <header class="hero"><p class="eyebrow">МАТЕРИАЛЫ. РАСЧЁТ. РЕЗУЛЬТАТ.</p><h1>Большие планы.<br><span>Ясная смета.</span></h1><p>Всё для вашего ремонта — в одном расчёте.<br>Выберите материалы. Добавьте детали. Сохраните PDF.</p><div class="hero-details"><span>20 материалов в каталоге</span><span>Черновик в браузере</span><span>PDF для клиента</span></div></header>
+    <button type="button" id="open-calculator" aria-expanded="false" aria-controls="material-calculator"><span class="calculator-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M8 6h8M8 11h2m4 0h2m-8 4h2m4 0h2m-8 4h2m4 0h2"/></svg></span><span class="calculator-launcher-text"><strong>Рассчитать количество материалов</strong><small>От размеров комнаты — к списку покупок.</small></span><span class="launcher-arrow" aria-hidden="true">↗</span></button>
     <section id="material-calculator" class="card calculator" aria-labelledby="calculator-title" hidden>
       <h2 id="calculator-title">Сколько материалов нужно?</h2>
       <p class="calculator-note">Расчёт по размерам и заданным нормам. Нормы расхода берите с упаковки выбранной марки: значения-примеры не являются универсальными. Раскладка ниже прямая, без повторного использования обрезков.</p>
@@ -38,6 +38,7 @@
       <button type="button" id="close-calculator">Закрыть калькулятор</button>
     </section>
     <section id="estimate-card" class="card" aria-labelledby="items-title">
+      <div class="section-intro screen-only"><div><p class="section-kicker">ВАШ ПРОЕКТ</p><h2>Детали решают всё.</h2></div><span class="local-badge">Без отправки данных</span></div>
       <div class="document-fields">
         <label>Номер сметы<input id="estimate-number" type="text" value="1"></label>
         <label>Дата сметы<input id="estimate-date" type="date"></label>
@@ -48,7 +49,7 @@
         <label>Исполнитель — реквизиты<textarea id="supplier" rows="3" placeholder="Название, ИИН/БИН, адрес, контакты"></textarea></label>
         <label>Заказчик — реквизиты<textarea id="client" rows="3" placeholder="Название или ФИО, ИИН/БИН, контакты"></textarea></label>
       </div>
-      <h2 id="items-title">Позиции сметы</h2>
+      <div class="items-heading screen-only"><h2 id="items-title">Материалы и стоимость</h2><p>Выберите из каталога или добавьте своё. Цены учебные.</p></div>
       <div class="table-wrap">
         <table>
           <thead><tr><th scope="col">Наименование</th><th scope="col">Количество / ед.</th><th scope="col">Цена за ед.</th><th scope="col">Сумма</th><th scope="col"><span class="sr-only">Действия</span></th></tr></thead>
@@ -70,10 +71,12 @@
       </dl>
       <label class="comment">Комментарий<textarea id="comment" rows="3" placeholder="Сроки, условия оплаты"></textarea></label>
       <p class="signature">Подпись ____________________</p>
+      <div class="estimate-actions">
       <button type="button" id="save-pdf">Сохранить PDF</button>
       <div class="draft-actions">
         <button type="button" id="copy-whatsapp">Скопировать для WhatsApp</button>
         <button type="button" id="new-estimate">Новая смета</button>
+      </div>
       </div>
       <p id="copy-status" role="status" aria-live="polite"></p>
       <div id="manual-copy" hidden>
@@ -82,7 +85,7 @@
       <p id="storage-status" role="status"></p>
       <p class="print-help">В окне печати выберите «Сохранить как PDF». Для чистого документа отключите колонтитулы браузера.</p>
     </section>
-    <p class="privacy">Данные остаются в вашем браузере. Валюта меняет только знак, без пересчёта курса.</p>
+    <footer class="privacy"><span>МЕГАСТРОЙ · Сметчик</span><p>Данные остаются в вашем браузере.<br>Смена валюты меняет только знак, без пересчёта курса.</p></footer>
   </main>
   <template id="item-template">
     <tr>
